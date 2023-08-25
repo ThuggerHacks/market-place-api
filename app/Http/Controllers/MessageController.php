@@ -56,12 +56,17 @@ class MessageController extends Controller
 
     public function deleteOne($id = 0) {
         $message = Message::find($id);
-
         if(!$message){
             return response()->json(["error" => "Houve um erro"]);
         }
+        
+        $result = Message::where("chat_id",$message->chat_id)->get();
 
-        $message->delete();
+        if(count($result) == 1){
+            Chat::where('id',$message->chat_id)->delete();
+        }else{
+            $message->delete();
+        }
 
         return $message;
     }

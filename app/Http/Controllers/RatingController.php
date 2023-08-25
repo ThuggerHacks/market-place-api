@@ -13,7 +13,7 @@ class RatingController extends Controller
 
     public function getByUserId($user_id = 0)
     {
-        return Rating::where("user_id",$user_id)->get();
+        return Rating::where("user_id",$user_id)->orderBy("id","desc")->get();
     }
 
     public function addRating(RatingValidator $request){

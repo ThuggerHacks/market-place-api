@@ -24,7 +24,7 @@ class ChatController extends Controller
     }
 
     public function getChatByUserId($user_id = 0){
-        $chat = Chat::where("sender_id",$user_id)->orWhere("receiver_id",$user_id)->get();
+        $chat = Chat::where("sender_id",$user_id)->orWhere("receiver_id",$user_id)->orderBy("id","desc")->get();
         
         return $chat;
     }
