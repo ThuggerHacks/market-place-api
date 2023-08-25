@@ -22,6 +22,28 @@ class ProductController extends Controller
         return Product::find($id);
     }
 
+    public function getProductByCategoryName($name = "Tudo"){
+        $categoryId = Category::where("category_name",$name)->first();
+
+        if($name == "Tudo"){
+            return Product::orderBy("id","desc")->get();
+        }
+
+        if(!$categoryId){
+            return response()->json(["error" => "Houve um erro!"]);
+        }
+
+        $product = Product::where("category_id",$categoryId->id)->get();
+
+
+        return $product;
+
+    }
+
+    public function getProductByTitle($title = ""){
+        return Product::where("title","LIKE","%".$title."%")->orderBy("id","desc")->get();
+    }
+
     public function getByUserId($user_id = 0){
         $product = response()->json(Product::where("user_id",$user_id)->orderBy("id","desc")->get());
         return $product;

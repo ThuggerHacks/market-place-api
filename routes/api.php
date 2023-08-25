@@ -22,6 +22,8 @@ Route::controller(UserController::class)->group(function(){
 
 Route::controller(ProductController::class)->group(function(){
     Route::get("/product","index");
+    Route::get("/search/{title?}","getProductByTitle");
+    Route::get("/product/category/{name?}","getProductByCategoryName");
     Route::get("/product/{id?}","getOne");
     Route::get("/product/user/{id}","getByUserId");
     Route::post("/product","addProduct");
