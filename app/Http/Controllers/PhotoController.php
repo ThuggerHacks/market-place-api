@@ -41,11 +41,18 @@ class PhotoController extends Controller
 
     public function uploadPhoto(Request $request)
     {
-        $file = $request->file;
-        $file = $file->store("/public/photos");
+        try{
+            $file = $request->file;
+            error_log($request->file);
 
-        $url = $_SERVER['APP_URL'].":".$_SERVER['SERVER_PORT']."/storage".explode("public",$file)[1];
-       
-        return response()->json(["url" => $url]);
+            $file = $file->store("/public/photos");
+
+            $url = $_SERVER['APP_URL'].":".$_SERVER['SERVER_PORT']."/storage".explode("public",$file)[1];
+        
+            return response()->json(["url" => $url,"file" => "hello"]);
+        }catch(\Exception $e){
+            error_log($request);
+            return response()->json(["error" => $e]);
+        }
     }
 }

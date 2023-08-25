@@ -14,7 +14,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        return Product::get();
+        return Product::orderBy("id","desc")->get();
     }
 
     public function getOne($id = 0)
@@ -23,7 +23,8 @@ class ProductController extends Controller
     }
 
     public function getByUserId($user_id = 0){
-        return response()->json(Product::where("user_id",$user_id)->get());
+        $product = response()->json(Product::where("user_id",$user_id)->orderBy("id","desc")->get());
+        return $product;
     }
 
     public function addProduct(ProductValidator $request)
@@ -74,8 +75,9 @@ class ProductController extends Controller
         $description = trim($request->description) == ""?$product->description:$request->description;
         $cover_url = trim($request->cover_url) == ""?$product->cover_url:$request->cover_url;
         $location = trim($request->location) == ""?$product->location:$request->location;
-        $price = trim($request->price) == ""?$product->price:$request->price;
-        $category_id = trim($request->category_id) == ""?$product->category_id:$request->category_id;
+        $price = $request->price == 0.0 ?$product->price:$request->price;
+        $category_id = $request->category_id == 0?$product->category_id:$request->category_id;
+        $available = $request->available == 0 ? $product->available:$request->available;
 
         $category = Category::find($category_id);
         $user = User::find($user_id);
@@ -91,10 +93,11 @@ class ProductController extends Controller
             "location" => $location,
             "price" => $price,
             "category_id" => $category_id,
-            "cover_url" => $cover_url
+            "cover_url" => $cover_url,
+            "available" => $available == 3?0:$available
         ]);
 
-
+        error_log($product);
 
         return response()->json($product);
     }

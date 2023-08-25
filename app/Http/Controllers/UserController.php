@@ -81,7 +81,6 @@ class UserController extends Controller
         $location = trim($request->location) == ""?$user->location:$request->location;
         $phone = trim($request->phone) == ""? $user->phone:$request->phone;
 
-
         if(!$user){
             return response()->json(["error" => "Utilizador nao existe!"]);
         }
@@ -89,11 +88,12 @@ class UserController extends Controller
         $user->update([
             "name" => $name,
             "email" => $email,
-            "password" => trim($password) == ""? md5($password):$user->password,
+            "password" => trim($password) != ""? md5($password):$user->password,
             "profile" => $profile,
             "location" => $location,
             "phone" => $phone
         ]);
+        error_log($user);
 
         return $user;
     }

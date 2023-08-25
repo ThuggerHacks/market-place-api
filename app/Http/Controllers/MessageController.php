@@ -19,6 +19,8 @@ class MessageController extends Controller
         $message = $request->message; 
         $photo_attach = $request->photo_attach; 
         $chat_id = $request->chat_id;    
+
+        error_log($request->receiver_id);
         
         $user1 = User::find($sender_id);
         $user2 = User::find($receiver_id);
@@ -43,7 +45,7 @@ class MessageController extends Controller
     }
 
     public function getByChatId($chat_id = 0){
-        $messages = Message::where("chat_id",$chat_id)->get();
+        $messages = Message::where("chat_id",$chat_id)->orderBy("id","desc")->get();
         return $messages;
     }
 

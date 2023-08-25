@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PhotoController;
@@ -52,8 +53,10 @@ Route::controller(RatingController::class)->group(function(){
 Route::controller(ChatController::class)->group(function(){
     Route::get("/chat","index");
     Route::get("/chat/{id}","getOne");
+    Route::get("/chat/user/{id}","getChatByUserId");
     Route::get("/chat/list/{product_id}","getChatByProductId");
-    Route::get("/chat/{product_id}/{receiver_id}/{sender_id}","getChatsByAll");
+    Route::get("/chat/chats/{product_id}/{receiver_id}/{sender_id}","getChatsByAll");
+    Route::get("/chat/{product_id}/{receiver_id}/{sender_id}","getChatByAll");
     Route::post("/chat","addChat");
     Route::delete("/chat/{id}","deleteChat");
 });
@@ -63,4 +66,9 @@ Route::controller(MessageController::class)->group(function(){
     Route::get("/message/chat/{chat_id?}","getByChatId");
     Route::post("/message","index");
     Route::delete("/message/{id?}","deleteOne");
+});
+
+Route::controller(CategoryController::class)->group(function(){
+    Route::get("/category","getCategory");
+    Route::get("/category/{name?}","index");
 });

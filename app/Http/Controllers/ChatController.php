@@ -23,11 +23,27 @@ class ChatController extends Controller
         return Chat::where("product_id",$product_id)->get();
     }
 
+    public function getChatByUserId($user_id = 0){
+        $chat = Chat::where("sender_id",$user_id)->orWhere("receiver_id",$user_id)->get();
+        
+        return $chat;
+    }
+
     public function getChatsByAll($product_id = 0,$receiver_id = 0, $sender_id = 0){
         $chat = Chat::where("product_id",$product_id)->where("sender_id",$sender_id)->where("receiver_id",$receiver_id)->get();
 
-        if(!$chat){
+        if(count($chat) == 0){
             $chat = Chat::where("product_id",$product_id)->where("sender_id",$receiver_id)->where("receiver_id",$sender_id)->get();
+        }
+
+        return $chat;
+    }
+
+    public function getChatByAll($product_id = 0,$receiver_id = 0, $sender_id = 0){
+        $chat = Chat::where("product_id",$product_id)->where("sender_id",$sender_id)->where("receiver_id",$receiver_id)->first();
+
+        if(!$chat){
+            $chat = Chat::where("product_id",$product_id)->where("sender_id",$receiver_id)->where("receiver_id",$sender_id)->first();
         }
 
         return $chat;
